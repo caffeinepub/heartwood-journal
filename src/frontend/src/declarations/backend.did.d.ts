@@ -16,6 +16,8 @@ export interface DiaryEntry {
   'date' : string,
   'mood' : string,
   'tags' : Array<string>,
+  'audioBlobIds' : Array<string>,
+  'videoBlobIds' : Array<string>,
   'moodEmoji' : string,
   'timestamp' : bigint,
   'photoBlobIds' : Array<string>,

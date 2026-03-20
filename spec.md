@@ -1,39 +1,31 @@
 # Heartwood Journal
 
 ## Current State
-New project with no existing application files.
+- Multi-user diary app with authorization and blob-storage components
+- DiaryEntry has: id, date, timestamp, content, mood, moodEmoji, tags, photoBlobIds
+- Frontend supports photo uploads per entry, playable inline
 
 ## Requested Changes (Diff)
 
 ### Add
-- Multi-user authentication so each user has their own private diary
-- Diary entry model: text content, date, mood (emoji + label), tags (array of strings), photo attachments
-- Calendar view for navigating entries by date; dates with entries are highlighted, empty dates are blank
-- Multiple entries per date shown in chronological order
-- Entry creation form with: text editor, mood picker, tag input, photo upload
-- Entry detail/view per selected date
-- Filter/browse entries by mood or tag
-- Photo attachment storage for diary images
+- `videoBlobIds: [Text]` field to DiaryEntry in backend
+- `audioBlobIds: [Text]` field to DiaryEntry in backend
+- Video upload support in frontend (MP4, MOV, WebM, AVI)
+- Audio upload support in frontend (MP3, WAV, AAC, OGG, M4A)
+- Inline video player per entry (HTML5 video element)
+- Inline audio player per entry (HTML5 audio element)
 
 ### Modify
-- None (new project)
+- DiaryEntry type to include videoBlobIds and audioBlobIds
+- Entry creation/editing UI to allow attaching video and audio files
+- Entry view to display/play video and audio attachments alongside photos
 
 ### Remove
-- None (new project)
+- Nothing removed
 
 ## Implementation Plan
-1. Select `authorization` and `blob-storage` components
-2. Generate Motoko backend with:
-   - User-scoped diary entries stored per principal
-   - Entry type: id, date (YYYYMMDD text), timestamp, text content, mood (label + emoji), tags, photo blob IDs
-   - CRUD operations: createEntry, getEntriesByDate, getAllEntries, updateEntry, deleteEntry
-   - Entries are private per user (filtered by caller principal)
-3. Frontend:
-   - Auth login/register gate
-   - Main layout: sidebar calendar + entry panel
-   - Calendar: monthly grid, highlight days with entries, click to select date
-   - Entry list: chronological list for selected date
-   - New entry form: text area, mood picker (emoji set), tag chips input, photo upload
-   - Entry viewer: display full entry with photos, mood, tags
-   - Filter bar: filter by mood or tag across all entries
-   - Warm cozy visual style: paper-texture background, earthy tones, rounded cards
+1. Update DiaryEntry type in main.mo to add videoBlobIds and audioBlobIds fields
+2. Regenerate backend bindings (backend.d.ts)
+3. Update frontend entry form to support video/audio file selection and upload via blob-storage
+4. Update entry detail view to render inline video and audio players
+5. Validate and build

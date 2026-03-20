@@ -1,13 +1,15 @@
 import Map "mo:core/Map";
 import Set "mo:core/Set";
-import List "mo:core/List";
 import Iter "mo:core/Iter";
 import Principal "mo:core/Principal";
 import Runtime "mo:core/Runtime";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 import MixinStorage "blob-storage/Mixin";
+import Migration "migration";
 
+// Specify the data migration function in with-clause
+(with migration = Migration.run)
 actor {
   // Prep modules
   include MixinStorage();
@@ -18,13 +20,15 @@ actor {
   // Diary Entry Type
   public type DiaryEntry = {
     id : Text;
-    date : Text; // "YYYYMMDD"
+    date : Text;
     timestamp : Int;
     content : Text;
     mood : Text;
     moodEmoji : Text;
     tags : [Text];
     photoBlobIds : [Text];
+    videoBlobIds : [Text]; // New field for video attachments
+    audioBlobIds : [Text]; // New field for audio attachments
   };
 
   public type UserEntries = {

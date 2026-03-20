@@ -1,4 +1,12 @@
-import { ChevronDown, ChevronUp, Clock, Pencil, Trash2 } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  Music,
+  Pencil,
+  Trash2,
+  Video,
+} from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { DiaryEntry } from "../backend";
@@ -168,6 +176,57 @@ export default function EntryCard({ entry, onEdit, showDate }: Props) {
                   loading="lazy"
                 />
               </a>
+            ) : null;
+          })}
+        </div>
+      )}
+
+      {/* Videos */}
+      {entry.videoBlobIds.length > 0 && (
+        <div className="space-y-2 pt-1">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
+            <Video size={12} />
+            <span>Videos</span>
+          </div>
+          {entry.videoBlobIds.map((blobId) => {
+            const url = getPhotoUrl(blobId);
+            return url ? (
+              // biome-ignore lint/a11y/useMediaCaption: user-uploaded personal video, captions not applicable
+              <video
+                key={blobId}
+                controls
+                className="w-full rounded-lg border border-border bg-black/5"
+                src={url}
+              />
+            ) : null;
+          })}
+        </div>
+      )}
+
+      {/* Audio */}
+      {entry.audioBlobIds.length > 0 && (
+        <div className="space-y-2 pt-1">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
+            <Music size={12} />
+            <span>Audio</span>
+          </div>
+          {entry.audioBlobIds.map((blobId, idx) => {
+            const url = getPhotoUrl(blobId);
+            return url ? (
+              <div
+                key={blobId}
+                className="flex items-center gap-3 p-2.5 rounded-xl border border-border bg-background/50"
+              >
+                <Music
+                  size={14}
+                  className="text-muted-foreground flex-shrink-0"
+                />
+                {/* biome-ignore lint/a11y/useMediaCaption: user-uploaded personal audio, captions not applicable */}
+                <audio controls className="flex-1 h-8 min-w-0" src={url} />
+                <span className="text-xs text-muted-foreground flex-shrink-0">
+                  #{idx + 1}
+                </span>
+              </div>
             ) : null;
           })}
         </div>
