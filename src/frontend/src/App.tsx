@@ -8,7 +8,8 @@ export default function App() {
   const { identity, loginStatus } = useInternetIdentity();
 
   const isAuthenticated = !!identity;
-  const isInitializing = loginStatus === "logging-in";
+  const isInitializing =
+    loginStatus === "logging-in" || loginStatus === "initializing";
 
   if (isInitializing) {
     return (

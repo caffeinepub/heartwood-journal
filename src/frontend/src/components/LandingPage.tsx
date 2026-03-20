@@ -1,20 +1,15 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { AlertCircle } from "lucide-react";
 import { BookOpen, Image, Leaf, Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
 
 export default function LandingPage() {
-  const { login, loginStatus } = useInternetIdentity();
-  const queryClient = useQueryClient();
+  const { login, loginStatus, loginError } = useInternetIdentity();
   const isLoggingIn = loginStatus === "logging-in";
+  const hasLoginError = loginStatus === "loginError";
 
-  const handleLogin = async () => {
-    try {
-      await login();
-      queryClient.clear();
-    } catch {
-      // ignore
-    }
+  const handleLogin = () => {
+    login();
   };
 
   const features = [
@@ -85,6 +80,21 @@ export default function LandingPage() {
           </div>
         </div>
       </header>
+
+      {/* Login error banner */}
+      {(hasLoginError || loginError) && (
+        <div
+          data-ocid="auth.error_state"
+          className="bg-destructive/10 border-b border-destructive/20 px-6 py-3"
+        >
+          <div className="max-w-6xl mx-auto flex items-center gap-2 text-destructive">
+            <AlertCircle size={16} className="flex-shrink-0" />
+            <p className="text-sm font-medium">
+              Sign in failed. Please try again.
+            </p>
+          </div>
+        </div>
+      )}
 
       <main>
         {/* Hero */}

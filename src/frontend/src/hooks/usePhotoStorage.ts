@@ -54,7 +54,7 @@ export function usePhotoStorage() {
         agent,
       );
       const bytes = new Uint8Array(await file.arrayBuffer());
-      const { hash } = await client.putFile(bytes, onProgress);
+      const { hash } = await client.putFile(bytes, onProgress, file.type);
       return hash;
     },
     [config, identity],

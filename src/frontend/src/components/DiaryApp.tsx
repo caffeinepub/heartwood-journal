@@ -1,6 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { RefreshCw } from "lucide-react";
 import { useState } from "react";
 import type { DiaryEntry } from "../backend";
+import { useActor } from "../hooks/useActor";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
 import CalendarSidebar from "./CalendarSidebar";
 import EntryFormModal from "./EntryFormModal";
@@ -15,6 +17,7 @@ function formatDateString(d: Date): string {
 
 export default function DiaryApp() {
   const { identity, clear } = useInternetIdentity();
+  const { actor, actorError } = useActor();
   const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState<string>(() =>
     formatDateString(new Date()),
@@ -96,6 +99,16 @@ export default function DiaryApp() {
 
       {/* Main content */}
       <main className="flex-1 flex flex-col overflow-hidden">
+        {/* Actor connection error notice */}
+        {!actor && actorError && (
+          <div
+            data-ocid="actor.error_state"
+            className="mx-4 mt-4 flex items-center gap-2 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm"
+          >
+            <RefreshCw size={14} className="flex-shrink-0" />
+            <span>Having trouble connecting. Please refresh the page.</span>
+          </div>
+        )}
         <EntryPanel
           selectedDate={selectedDate}
           filterMood={filterMood}
