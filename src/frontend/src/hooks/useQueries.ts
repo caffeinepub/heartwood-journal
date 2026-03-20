@@ -72,6 +72,7 @@ export function useUpdateEntry() {
     },
     onSuccess: (_data, entry) => {
       queryClient.invalidateQueries({ queryKey: ["entries"] });
+      queryClient.invalidateQueries({ queryKey: ["datesWithEntries"] });
       queryClient.invalidateQueries({
         queryKey: ["entries", "date", entry.date],
       });
